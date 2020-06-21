@@ -8,31 +8,23 @@
 </head>
 <body class="">
 
-    <div id="app" class="container">
-        <nav class="navbar navbar-light bg-light">
-            <div class="navbar-text ml-auto">
-                <b>cart:</b>
-                <span class="badge badge-pill badge-success">{{ cart.length }}</span>
-            </div>
-        </nav>
-        <div class="form-inline mr-auto">
-            <label for="" class="font-weight-bold mr-2">Max</label>
-            <input type="number" class="form-control w-25" v-model="maximum">
-        </div>
-        <input type="range" class="custom-range" min="0" max="200" v-model="maximum"> 
-        <div class="row d-flex mb-3 align-items-center" v-for="item in products" v-if="item.price <= Number(maximum)">
-            <div class="col-1 m-auto">
-                <button class="btn btn-info" v-on:click="addItem(item)">+</button>
-            </div>
-            <div class="col-sm-4">
-                <img :src="item.image" alt="item.name" class="img-fluid d-block">
-            </div>
-            <div class="col">
-                <h3 class="text-info">{{ item.name }}</h3>
-                <p class="mb-0">{{ item.description }}</p>
-                <div class="h5 float-right">${{ item.price }}</div>
-            </div>
-        </div>
+    <div id="app" class="container mt-5">
+        <p>
+            <strong>Bound:</strong>
+            <span>{{ name }}</span>
+        </p>
+        <p>
+            <strong>Parsed:</strong>
+            <span v-html="name">{{ name }}</span>
+        </p>
+        <p>
+            <strong>Unchangable:</strong>
+            <span v-once>{{ name }}</span>
+        </p>
+        <p>
+            <strong>Text:</strong>
+            <textarea v-model="name" id="" cols="3" class="form-control"></textarea>
+        </p>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
