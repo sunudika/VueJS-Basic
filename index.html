@@ -21,9 +21,9 @@
                     <button class="btn btn-success btn-sm dropdown-toggle" id="dropdownCart" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="badge badge-pill badge-success">{{ cartQty }}</span>
                         <i class="fas fa-shopping-cart"></i>
-                        {{ cartTotal | currencyFormat }}
+                        <price :value="Number(cartTotal)"></price>
                     </button>
-                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCart" v-if="cartQty != 0">
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCart" v-if="cart.length > 0">
                         <div>
                             <div v-for="(item, index) in cart" :key="index">
                                 <div class="dropdown-item-text text-nowrap text-left">
@@ -59,23 +59,7 @@
             </div>
         </transition>
 
-        <transition-group name="fade" tag="div" @beforeEnter="before" @enter="enter" @leave="leave">
-            <div class="row d-none mb-3 align-items-center" v-for="(item, index) in products" :key="item.id" v-if="item.price <= Number(maximum)" :data-index="index">
-                <div class="col-1 m-auto">
-                    <button class="btn btn-info" v-on:click="addItem(item)">+</button>
-                </div>
-                <div class="col-sm-4">
-                    <img :src="item.image" alt="item.name" class="img-fluid d-block">
-                </div>
-                <div class="col">
-                    <h3 class="text-info">{{ item.name }}</h3>
-                    <p class="mb-0">{{ item.description }}</p>
-                    <button class="btn btn-outline-warning btn-lg float-right">
-                        <span class="font-weight-bold">{{ item.price | currencyFormat }}</span>
-                    </button>
-                </div>
-            </div>
-        </transition-group>
+        <product-list :products="products" :maximum="maximum" @add="addItem"></product-list>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

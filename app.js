@@ -1,3 +1,64 @@
+Vue.component('price', {
+    data: function () {
+        return {}
+    },
+    props: {
+        value: Number,
+        prefix: {
+            type: String,
+            default: '$'
+        },
+        precision: {
+            type: Number,
+            default: 2
+        }
+    },
+    template: `<span class="font-weight-bold">{{ this.prefix + Number.parseFloat(this.value).toFixed(this.precision) }}</span>`
+})
+
+Vue.component('product-list', {
+    props: ['products', 'maximum'],
+    methods: {
+        before: function(element) {
+            element.className = "d-none"
+        },
+        enter: function(element) {
+            var delay = element.dataset.index * 100
+            setTimeout(function() {
+                element.className = "row d-flex mb-3 align-items-center animated fadeInRight"
+            }, delay)
+        },
+        leave: function(element) {
+            var delay = element.dataset.index * 100
+            setTimeout(function() {
+                element.className = "row d-flex mb-3 align-items-center animated fadeOutRight"
+            }, delay)
+        },
+    },
+    template: `
+    <transition-group name="fade" tag="div" @beforeEnter="before" @enter="enter" @leave="leave">
+        <div class="row d-none mb-3 align-items-center" v-for="(item, index) in products" :key="item.id" v-if="item.price <= Number(maximum)" :data-index="index">
+            <div class="col-1 m-auto">
+                <button class="btn btn-info" @click="$emit('add', item)">+</button>
+            </div>
+            <div class="col-sm-4">
+                <img :src="item.image" alt="item.name" class="img-fluid d-block">
+            </div>
+            <div class="col">
+                <h3 class="text-info">{{ item.name }}</h3>
+                <p class="mb-0">{{ item.description }}</p>
+                <button class="btn btn-outline-warning btn-lg float-right">
+                    <price  :value="Number(item.price)"
+                            :prefix="'$'"
+                            :precision="2"
+                    ></price>
+                </button>
+            </div>
+        </div>
+    </transition-group>
+    `
+})
+
 var app = new Vue({
     el: '#app',
     data: {
@@ -42,21 +103,6 @@ var app = new Vue({
         }
     },
     methods: {
-        before: function(element) {
-            element.className = "d-none"
-        },
-        enter: function(element) {
-            var delay = element.dataset.index * 100
-            setTimeout(function() {
-                element.className = "row d-flex mb-3 align-items-center animated fadeInRight"
-            }, delay)
-        },
-        leave: function(element) {
-            var delay = element.dataset.index * 100
-            setTimeout(function() {
-                element.className = "row d-flex mb-3 align-items-center animated fadeOutRight"
-            }, delay)
-        },
         addItem: function(product) {
             var productIndex;
             var productExist = this.cart.filter(function (item, index) {
