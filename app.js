@@ -103,6 +103,9 @@ var app = new Vue({
         }
     },
     methods: {
+        toggleSliderStatus: function() {
+            this.sliderStatus = !this.sliderStatus;
+        },
         addItem: function(product) {
             var productIndex;
             var productExist = this.cart.filter(function (item, index) {
